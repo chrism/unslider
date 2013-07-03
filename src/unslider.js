@@ -21,6 +21,7 @@
       prev: '←',             // text or html inside prev button (string)
       next: '→',             // same as for prev option
       fluid: f,              // is it a percentage width? (boolean)
+      before: f,             // invoke before animation (function with argument)
       complete: f,           // invoke after animation (function with argument)
       activeClass: 'active', // name of active class for current slide
       items: '>ul',          // slides container selector
@@ -143,6 +144,13 @@
       if (index < 0) index = li.length - 1;
       target = li.eq(index);
 
+      // Update activeClass for current slide
+      ul.children().removeClass(o.activeClass);
+      target.addClass(o.activeClass);
+
+      //  Fire before event
+      $.isFunction(o.before) && !callback && o.before(el);
+
       var speed = callback ? 5 : o.speed | 0,
         obj = {height: target.outerHeight()};
 
@@ -152,10 +160,6 @@
 
         el.animate(obj, speed) && ul.animate($.extend({left: '-' + index + '00%'}, obj), speed, function(data) {
           _.i = index;
-
-          // Update activeClass for current slide
-          ul.children().removeClass(o.activeClass);
-          target.addClass(o.activeClass);
 
           $.isFunction(o.complete) && !callback && o.complete(el);
         });
