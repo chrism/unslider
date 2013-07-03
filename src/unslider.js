@@ -11,6 +11,7 @@
     //  Set some options
     _.o = {
       speed: 500,            // animation speed, false for no transition (integer or boolean)
+      easing: "swing",       // uses jQuery default but can be updated if using https://github.com/gdsmith/jquery.easing
       delay: 3000,           // delay between slides, false for no autoplay (integer or boolean)
       init: 0,               // init delay, false for no delay (integer or boolean)
       pause: !f,             // pause on hover (boolean)
@@ -158,7 +159,7 @@
         //  Handle those pesky dots
         el.find('.dot').eq(index).addClass('active').siblings().removeClass('active');
 
-        el.animate(obj, speed) && ul.animate($.extend({left: '-' + index + '00%'}, obj), speed, function(data) {
+        el.animate(obj, speed) && ul.animate($.extend({left: '-' + index + '00%'}, obj), speed, o.easing, function(data) {
           _.i = index;
 
           $.isFunction(o.complete) && !callback && o.complete(el);
